@@ -18,30 +18,13 @@ headers = {
     'Cookie': cookie,
 }
 
-
 def main():
-    existing_emojis = get_current_emoji_list()
-    uploaded = 0
-    skipped = 0
-    for filename in sys.argv[1:]:
-        print("Processing {}.".format(filename))
-        emoji_name = os.path.splitext(os.path.basename(filename))[0]
-        if emoji_name in existing_emojis:
-            print("Skipping {}. Emoji already exists").format(emoji_name)
-            skipped += 1
-        else:
-            upload_emoji(emoji_name, filename)
-            print("{} upload complete.".format(filename))
-            uploaded += 1
-    print('\nUploaded {} emojis. ({} already existed)'.format(uploaded, skipped))
+    filename = sys.argv[1]
+    emoji_name = sys.argv[2]
+    print("Processing {}.".format(filename))
 
-
-def get_current_emoji_list():
-    r = requests.get(url, headers=headers)
-    r.raise_for_status()
-    x = re.findall("data-emoji-name=\"(.*)\"", r.text)
-    return x
-
+    upload_emoji(emoji_name, filename)
+    print("{} upload complete.".format(filename))
 
 def upload_emoji(emoji_name, filename):
     # Fetch the form first, to generate a crumb.
